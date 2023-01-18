@@ -4,7 +4,7 @@ import React from "react";
 import { useTable } from "react-table";
 import './Table.css';
 
-export default function Table({ columns, data }) {
+export default function Table({ columns, data, id}) {
   // Use the useTable Hook to send the columns and data to build the table
   const {
     getTableProps,
@@ -17,6 +17,7 @@ export default function Table({ columns, data }) {
     columns,
     data
   })
+  console.log(id);
 
   /* 
     Render the UI for your table

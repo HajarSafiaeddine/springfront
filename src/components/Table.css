@@ -17,6 +17,10 @@ table {
   table tr:hover {
     background-color: #ddd;
   }
+  .mybuttons{
+    display: flex;
+    justify-content: space-evenly;
+  }
   
   table th, tfoot td {
     padding-top: 12px;
