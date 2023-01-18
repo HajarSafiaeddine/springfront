@@ -1,20 +1,69 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import Table from "./Table";
 import axios from 'axios';
-import { COLUMNS, ColumnsData } from './Columns';
-
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     
   const [data,setData]=useState([]);
-  const columns = useMemo(() => COLUMNS, []);
+  // const columns = useMemo(() => COLUMNS, []);
+  let navigate =useNavigate();
   const [email,setEmail]=useState("");
   const [name,setName]=useState("");
   const [date,setDate]=useState("");
-  
-  
+ 
 
+ 
+
+  const handleDelete = async (id) =>{
+    await axios.delete("http://localhost:8080/students/id/" +id);
+    const result = await axios("http://localhost:8080/students/getall");
+    setData(result.data);
+  }
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Informations personnelles",
+        columns: [
+          {
+            Header: "ID",
+            accessor: "id",
+            footer: "id",
+          },
+          {
+            Header: "NAME",
+            accessor: "name",
+            footer: "name",
+          },
+          {
+            Header: "EMAIL",
+            accessor: "email",
+            footer: "email",
+          },
+          {
+            Header: "AGE",
+            accessor: "age",
+            footer: "age",
+          },
+          {
+            Header: "ACTIONS",
+            Cell: row => (
+              <div className="mybuttons">
+                 <button style={{border: "none", backgroundColor: "transparent"}}  onClick={()=> navigate(`/student/${row.row.original.id}`)}>Edit</button>
+                 <button style={{border: "none", backgroundColor: "transparent"}}   onClick={()=> handleDelete(row.row.original.id)}>Delete</button>
+              </div>
+              ),
+             
+          },
+        ],
+      },
+
+    ],
+    []
+  );
+
+  
   useEffect(() => {
     (async () => {
       const result = await axios("http://localhost:8080/students/getall");
@@ -22,22 +71,19 @@ const Home = () => {
     })();
   }, []);
 
-
-
-
-  const createBook = async (e)=>{
+  const createStudent = async (e)=>{
       e.preventDefault();
       const student = {
         name,
         email,
         date,
         }
-      
-      console.log(student)
-        
-        let book = await axios.post('http://localhost:8080/students/addnewone', student) 
-  
-        console.log("book" , book)
+        await axios.post('http://localhost:8080/students/addnewone', student) 
+        const result = await axios("http://localhost:8080/students/getall");
+        setData(result.data);
+        setEmail("");
+        setName("");
+        setDate("");
     }
   
   
@@ -46,8 +92,13 @@ const Home = () => {
     <button style={{marginLeft:"90vh" , marginTop:"2vh",marginBottom:"2vh"}} type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" >
   Ajouter un étudiant
 </button>
-      <Table columns={columns} data={data} id={data} />
-      {/* <ColumnsData /> */}
+
+
+
+
+      <Table columns={columns} data={data} id={data}  />
+     
+<div>
 <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog" role="document">
     <div className="modal-content">
@@ -72,17 +123,23 @@ const Home = () => {
       </div>
       </div>
       <div className="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
         <Button
               variant='success'
               type='submit'
-              onClick={(e) => createBook(e)}
+              onClick={(e) => createStudent(e)}
             >
               Ajouter 
             </Button>
+           
       </div>
     </div>
   </div>
+</div>
+</div>
+<div>
+
+
 </div>
      
     </div>
