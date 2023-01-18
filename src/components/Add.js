@@ -32,7 +32,6 @@ const Add = () => {
         }
         await axios.put('http://localhost:8080/students/id/' + id , student );
         showToastMessage();
-        
         dispatch(updateStudent(id));
         // navigate("/");
         
@@ -80,7 +79,7 @@ const Add = () => {
         </Button>
       </Form>
     </div>
-    <ToastContainer autoClose={4000}/>
+    <ToastContainer/>
   </div>
   )
 }
