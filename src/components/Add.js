@@ -28,7 +28,7 @@ const Add = () => {
     <div className='container d-flex justify-content-center'>
     <div className='col-md-6'>
       <Form>
-        <h1 style={{textAlign:"center"}}>Modifier un étudiant</h1>
+        <h1 style={{textAlign:"center", marginTop: "5vh"}}>Modifier un étudiant</h1>
         <br />
         <Form.Group className='mb-3' controlId='formBasicEmail'>
           <Form.Label>Nom</Form.Label>
@@ -58,7 +58,7 @@ const Add = () => {
           />
         </Form.Group>
         <Button
-          variant='success'
+          variant='info'
           type='submit'
           onClick={() => UpdateLivre()}
         >

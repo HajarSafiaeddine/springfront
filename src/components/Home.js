@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
     
   const [data,setData]=useState([]);
-  // const columns = useMemo(() => COLUMNS, []);
   let navigate =useNavigate();
   const [email,setEmail]=useState("");
   const [name,setName]=useState("");
@@ -50,8 +49,8 @@ const Home = () => {
             Header: "ACTIONS",
             Cell: row => (
               <div className="mybuttons">
-                 <button style={{border: "none", backgroundColor: "transparent"}}  onClick={()=> navigate(`/student/${row.row.original.id}`)}>Edit</button>
-                 <button style={{border: "none", backgroundColor: "transparent"}}   onClick={()=> handleDelete(row.row.original.id)}>Delete</button>
+                 <button style={{border: "none", backgroundColor: "orange", padding: "1vh 3vh", borderRadius: "4px"}}  onClick={()=> navigate(`/student/${row.row.original.id}`)}>Edit</button>
+                 <button style={{border: "none", backgroundColor: "red", borderRadius: "4px", padding: "1vh 3vh"}}   onClick={()=> handleDelete(row.row.original.id)}>Delete</button>
               </div>
               ),
              
@@ -89,7 +88,7 @@ const Home = () => {
   
   return (
     <div>
-    <button style={{marginLeft:"90vh" , marginTop:"2vh",marginBottom:"2vh"}} type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" >
+    <button style={{marginLeft:"90vh" , marginTop:"6vh",marginBottom:"4vh"}} type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" >
   Ajouter un étudiant
 </button>
 
@@ -104,7 +103,7 @@ const Home = () => {
     <div className="modal-content">
       <div className="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Ajouter un étudiant</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal"  aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -123,9 +122,9 @@ const Home = () => {
       </div>
       </div>
       <div className="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Fermer</button>
         <Button
-              variant='success'
+              variant='info'
               type='submit'
               onClick={(e) => createStudent(e)}
             >
