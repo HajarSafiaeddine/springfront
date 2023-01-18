@@ -6,9 +6,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateStudent } from "../container/redux/actions/studentActions";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Add = () => {
+    const showToastMessage = () => {
+        toast.success('Student updated successfully !');
+        navigate("/");
+    };
     const dispatch = useDispatch();
     const { id } = useParams();
     const email = useRef();
@@ -16,14 +22,17 @@ const Add = () => {
     const date = useRef();
     let navigate =useNavigate();
 
-    const UpdateLivre = async () => {
+    const UpdateStudent = async (e) => {
+        e.preventDefault();
         const student ={
             name: name.current.value,
             date: date.current.value,
             email: email.current.value,
          
         }
-        await axios.put('http://localhost:8080/students/id/' + id , student);
+        await axios.put('http://localhost:8080/students/id/' + id , student );
+        showToastMessage();
+        
         dispatch(updateStudent(id));
         // navigate("/");
         
@@ -65,12 +74,13 @@ const Add = () => {
         <Button
           variant='info'
           type='submit'
-          onClick={() => UpdateLivre()}
+          onClick={(e) => UpdateStudent(e)}
         >
           Modifier
         </Button>
       </Form>
     </div>
+    <ToastContainer autoClose={4000}/>
   </div>
   )
 }
