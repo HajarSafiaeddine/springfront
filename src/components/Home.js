@@ -3,22 +3,21 @@ import Table from "./Table";
 import axios from 'axios';
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import {getStudents,deleteStudent,create} from '../container/redux/actions/studentActions';
 
 const Home = () => {
-    
-  const [data,setData]=useState([]);
+  const students = useSelector((state) => state);
+  const dispatch = useDispatch();
   let navigate =useNavigate();
   const [email,setEmail]=useState("");
   const [name,setName]=useState("");
   const [date,setDate]=useState("");
- 
-
- 
-
   const handleDelete = async (id) =>{
     await axios.delete("http://localhost:8080/students/id/" +id);
     const result = await axios("http://localhost:8080/students/getall");
-    setData(result.data);
+    dispatch(deleteStudent(id));
+    dispatch(getStudents(result.data));
   }
   const columns = useMemo(
     () => [
@@ -61,15 +60,12 @@ const Home = () => {
     ],
     []
   );
-
-  
   useEffect(() => {
     (async () => {
       const result = await axios("http://localhost:8080/students/getall");
-      setData(result.data);
+      dispatch(getStudents(result.data));
     })();
   }, []);
-
   const createStudent = async (e)=>{
       e.preventDefault();
       const student = {
@@ -78,25 +74,19 @@ const Home = () => {
         date,
         }
         await axios.post('http://localhost:8080/students/addnewone', student) 
+        dispatch(create(student));
         const result = await axios("http://localhost:8080/students/getall");
-        setData(result.data);
+        dispatch(getStudents(result.data));
         setEmail("");
         setName("");
         setDate("");
     }
-  
-  
   return (
     <div>
     <button style={{marginLeft:"90vh" , marginTop:"6vh",marginBottom:"4vh"}} type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" >
   Ajouter un étudiant
 </button>
-
-
-
-
-      <Table columns={columns} data={data} id={data}  />
-     
+      <Table columns={columns} data={students.allStudents.students} id={students.allStudents.students}  />  
 <div>
 <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog" role="document">
@@ -137,10 +127,7 @@ const Home = () => {
 </div>
 </div>
 <div>
-
-
-</div>
-     
+</div>  
     </div>
   )
 }

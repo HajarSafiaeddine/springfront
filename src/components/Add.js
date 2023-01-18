@@ -4,9 +4,12 @@ import Form from "react-bootstrap/Form";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateStudent } from "../container/redux/actions/studentActions";
 
 
 const Add = () => {
+    const dispatch = useDispatch();
     const { id } = useParams();
     const email = useRef();
     const name = useRef();
@@ -20,8 +23,10 @@ const Add = () => {
             email: email.current.value,
          
         }
-        await axios.put('http://localhost:8080/students/id/' + id , student) 
-        navigate("/");
+        await axios.put('http://localhost:8080/students/id/' + id , student);
+        dispatch(updateStudent(id));
+        // navigate("/");
+        
       };
   return (
    
